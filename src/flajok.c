@@ -20,14 +20,12 @@ set_flag_value(flag_set_t *flag_set, raw_flag_t source, size_t index) {
 
 size_t
 parse_one(flag_set_t *flag_set, const char *word, size_t start) {
-    size_t
-        word_len            = strlen(word),
-        i_word              = start,
-        flag_id,
-        i;
-
-    raw_flag_t raw_flag     = {};
-    char       ch;
+    raw_flag_t raw_flag = {};
+    size_t word_len     = strlen(word);
+    size_t i_word       = start;
+    size_t flag_id;
+    size_t i;
+    char   ch;
 
     /* get minuses */
     if (word[i_word] == '-') {
@@ -137,13 +135,13 @@ extract_word(int argc, char **argv, char word[]) {
 flag_set_t
 flajok(int argc, char **argv, flag_t keys[], size_t keys_len) {
     char       src[ARGV_BUF_LEN] = {};
-    extract_word(argc, argv, src);
+    flag_set_t flag_set          = make_flag_set();
+    size_t     step              = 0;
+    size_t     src_len;
+    size_t     i;
 
-    flag_set_t flag_set = make_flag_set();
-    size_t
-            src_len         = strlen(src),
-            i               = 0,
-            step            = 0;
+    extract_word(argc, argv, src);
+    src_len = strlen(src);
 
     for (i = 0; i < keys_len; i++) {
         if (add_flag(&flag_set, keys[i]) == -1) {
