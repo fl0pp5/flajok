@@ -31,6 +31,10 @@ main(int argc, char **argv) {
     size_t n = 2;
     flag_set_t flag_set = flajok(argc, argv, keys, n);
 
+    if (flag_set.len == -1) {
+        return -1;
+    }
+
     for (i = 0; i < flag_set.len; i++) {
         if (strcmp(flag_set.flags[i].name, "port") == 0) {
             port = *(int *) flag_set.flags[i].value;

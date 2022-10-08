@@ -17,10 +17,10 @@ enum FlagType {
 
 typedef struct {
     enum FlagType type;
-    const char *name;
-    const char *usage;
-    char  value[VALUE_BUF_LEN];
-    const char *default_value;
+    const char   *name;
+    const char   *usage;
+    const char   *default_value;
+    char          value[VALUE_BUF_LEN];
 } flag_t;
 
 
@@ -36,8 +36,8 @@ typedef struct {
     size_t cap;
 } flag_set_t;
 
-size_t
-parse_one(flag_set_t *flag_set, const char *word, size_t start);
+ssize_t
+parse_one(flag_set_t *flag_set, const char *word, ssize_t start);
 
 flag_set_t
 make_flag_set();
@@ -45,10 +45,8 @@ make_flag_set();
 int
 add_flag(flag_set_t *flag_set, flag_t flag);
 
-size_t
+ssize_t
 get_flag_id(flag_set_t *flag_set, const char *name);
-
-
 
 flag_set_t
 flajok(int argc, char **argv, flag_t keys[], size_t keys_len);

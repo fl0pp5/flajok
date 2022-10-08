@@ -8,7 +8,7 @@ set_flag_value(flag_set_t *flag_set, raw_flag_t source, size_t index) {
     switch (flag_set->flags[index].type) {
         case INT_FLAG:
         case BOOL_FLAG:
-            *(int *) flag_set->flags[index].value = strtol(source.value, NULL, 10);
+            *(long *) flag_set->flags[index].value = strtol(source.value, NULL, 10);
             break;
         case STR_FLAG:
             strcpy(flag_set->flags[index].value, source.value);
@@ -18,11 +18,11 @@ set_flag_value(flag_set_t *flag_set, raw_flag_t source, size_t index) {
     }
 }
 
-size_t
-parse_one(flag_set_t *flag_set, const char *word, size_t start) {
+ssize_t
+parse_one(flag_set_t *flag_set, const char *word, ssize_t start) {
     raw_flag_t raw_flag = {};
+    ssize_t    i_word   = start;
     size_t     word_len = strlen(word);
-    size_t     i_word   = start;
     size_t     flag_id;
     size_t     i;
     char       ch;
@@ -96,9 +96,9 @@ make_flag_set() {
     };
 }
 
-size_t
+ssize_t
 get_flag_id(flag_set_t *flag_set, const char *name) {
-    size_t i;
+    ssize_t i;
 
     for (i = 0; i < flag_set->len; i++) {
         if (strcmp(flag_set->flags[i].name, name) == 0) {
@@ -115,7 +115,6 @@ add_flag(flag_set_t *flag_set, flag_t flag) {
     }
 
     flag_set->flags[flag_set->len] = flag;
-
     flag_set->len++;
 
     return 1;
@@ -136,7 +135,7 @@ flag_set_t
 flajok(int argc, char **argv, flag_t keys[], size_t keys_len) {
     char       src[ARGV_BUF_LEN] = {};
     flag_set_t flag_set          = make_flag_set();
-    size_t     step              = 0;
+    ssize_t    step              = 0;
     size_t     src_len;
     size_t     i;
 
